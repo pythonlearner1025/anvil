@@ -1,5 +1,25 @@
 {
     "categories": [
-        
+       {
+           "name": "art medium",
+           "hasAsset": false
+
+       },
+       {
+           "name": "camera",
+           "hasAsset": false
+       }, 
+       {
+           "name": "details",
+           "hasAsset": false
+       },
+       {
+           "name": "really long text",
+           "hasAsset": false
+       },
+       {
+           "name": "short",
+           "hasAsset": false
+       }
     ]
 }

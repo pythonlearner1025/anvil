@@ -1,0 +1,94 @@
+.PromptUI-container{
+    position: absolute;
+    display: flex;
+}
+
+.PromptUI-wrapper{
+    display: grid;
+    width: inherit;
+    height: inherit;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.PromptSelectArea-Container{
+    grid-row: 2/6;
+}
+
+.PromptTxtArea-Container{
+    grid-row: 1;
+}
+
+.PromptSelectArea-Wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    gap: 10px;
+}
+
+.PromptCategoryPreview-Container{
+    width: fit-content;
+    height: fit-content;
+}
+
+.card{
+    position: relative;
+    display: flex;
+    flex-direction:column;
+    min-width:0;
+    background-clip:border-box;
+}
+
+.card-header{
+    display: block;
+    border-bottom: none;
+    padding: 1rem;
+    overflow-wrap: break-word;
+    text-align: start;
+    text-size-adjust: 100%
+}
+
+.card-body{
+    box-sizing: border-box;
+    display: block;
+    overflow-wrap: break-word;
+    text-align: start;
+    text-size-adjust: 100%;
+}
+
+.card-wrapper {
+   align-items: flex-start; 
+   box-sizing: border-box;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: stretch;
+   overflow-wrap: break-word;
+   text-align: start;
+   text-size-adjust: 100%;
+   gap: 10px;
+}
+
+
+.PromptCategory-Container{
+    width: 100%;
+    height: 100%
+}
+
+.PromptCategory-Wrapper{
+    display: grid,
+
+}
+
+.gray {
+    background-color:gray
+}
+
+.purple {
+    background-color:purple;
+}
+
+.smoke {
+    background-color:bisque;
+}

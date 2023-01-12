@@ -1,31 +1,37 @@
 import {useState, useRef} from "react"
-import PromptSubCategoryPreview from "./PromptSubCategoryPreview"
-import PromptObject from "./PromptObject"
+import PromptSelectableObject from "./PromptSelectableObject"
+import "./PromptUI.css"
+import {PromptObject, SubCategory} from "../types/PromptUITypes"
+import {getSelectableObject} from "../utils/getSelectableObject";
 
 interface Props {
-    name: string,
+    subCategory: SubCategory,
 }
 
 const PromptSubCategory = (props: Props) => {
     const [isPressed, setIsPressed] = useState(false)
-    const promptObjects:Array<string> = []
+    const promptObjects:Array<PromptObject> = getSelectableObject(props.subCategory.name)
 
-    if (!isPressed) {
-        return (
-           <PromptSubCategoryPreview name={props.name}/> 
-        )
-    } else return (
-        <div className="PromptSubCategory-Container">
-            <div className="PromptSubCategory-Wrapper">
-                {promptObjects.map((o,i)=> {
-                    return (
-                        <PromptObject 
-                        key={i}
-                        name={o}
-                        />
-                    )
-                })}
+    const handleOnClick = () => {
+        setIsPressed(!isPressed)
+    }
+
+    return (
+        <div className="card">
+            <div className="card-header smoke" onClick={handleOnClick}>
+                <h4>{props.subCategory.name}</h4>
             </div>
+            {isPressed ?   
+            <div className="card-body smoke">
+                <div className="card-wrapper">
+                    {promptObjects.map((obj,i)=>{
+                        return (
+                            <PromptSelectableObject key={i} obj={obj}/>
+                        )
+                    })} 
+                </div>
+            </div>
+            : <></>}
         </div>
     )
 }
