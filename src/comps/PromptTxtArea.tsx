@@ -2,7 +2,8 @@ import { useCallback, useRef, useState, useEffect } from 'react';
 import "./PromptUI.css"
 import PromptTag from "./PromptTag"
 import PromptInput from "./PromptInput"
-import {Tag, RawPrompt, PromptObject}  from "../types/PromptUITypes"
+import PromptPadding from "./PromptPadding"
+import {Tag, PromptObject, BufferObject, PromptBuffer}  from "../types/PromptUITypes"
 // display prompts from state
 // save prompts to state 
 /*
@@ -51,94 +52,146 @@ import {Tag, RawPrompt, PromptObject}  from "../types/PromptUITypes"
 
 // to be later replaced with redux
 interface Props {
-    promptObject: PromptObject
+    promptObject: PromptObject | null,
+    promptBuffer: PromptBuffer | null
 }
 
-type BufferObject = {
-    type: 'RawPrompt' | 'PromptObject' | 'InputPrompt',
-    tag: Tag | null
-}
 
+const makeBufferObj = (type: 'RawPrompt' | 'PromptObject' | 'InputPrompt' | 'PromptPadding', body?: string, assetPath?: string): BufferObject => {
+        if (type !== 'InputPrompt' && type !== 'PromptPadding')
+        return {
+            type: type,
+            tag: {
+                type: type,
+                body: body!,
+                assetPath: assetPath
+                }
+        }
+        else if (type === 'InputPrompt')
+        return {
+            type: 'InputPrompt',
+            tag: null
+        }
+        else return {
+            type: 'PromptPadding',
+            tag: null
+        }
+    }
 const PromptTxtArea = (props: Props) => {
-    const [buffer, setBuffer] = useState(new Array<BufferObject>())
+    const [buffer, setBuffer] = useState<Array<BufferObject>>([])
     const [currentIndex, setCurrentIndex] = useState(0)
+    const lastInputRef = useRef<HTMLInputElement|null>(null)
+
+    useEffect((()=> {
+        console.log(buffer)
+    }), [buffer])
+
+    const insertToBuffer = (obj: BufferObject, idx: number, padding=true, del=0):Array<BufferObject> => {
+        const currentBuffer = buffer;
+        currentBuffer.splice(idx, del, obj)
+        if (padding) currentBuffer.splice(idx, 0, makeBufferObj('PromptPadding'))
+        const newBuffer: Array<BufferObject> = []
+        currentBuffer.forEach(e => newBuffer.push(e))
+        setCurrentIndex(currentIndex + 2)
+        return newBuffer
+    }
 
     // insert selected PromptObject to cursor location
     useEffect((()=> {
-        const tag: Tag = {
-            type: "PromptObject",
-            prompt: props.promptObject
-        }
-
-        const bufferObj: BufferObject = {
-            type: "PromptObject",
-            tag: tag
-        }
-        
-        const currentBuffer = buffer;
-        currentBuffer.splice(currentIndex, 0, bufferObj)
-        setBuffer(currentBuffer)
+        if (props.promptObject == null) return
+        const bufferObj: BufferObject = makeBufferObj("PromptObject",props.promptObject.name, props.promptObject.assetPath)
+        var del = 0
+        if (currentIndex < buffer.length && buffer[currentIndex].type == 'InputPrompt') del = 1
+        const newBuffer = insertToBuffer(bufferObj, currentIndex, true, del)
+        setBuffer(newBuffer)
     }), [props.promptObject])
 
-
-    // current index update means create new InputPrompt in that location
     useEffect((()=> {
-        const bufferObj: BufferObject = {
-            type: "InputPrompt",
-            tag: null
-        }
-        const currentBuffer = buffer;
-        currentBuffer.splice(currentIndex, 0, bufferObj)
-        setBuffer(currentBuffer)
-    }), [currentIndex])
+        if (props.promptBuffer == null) return
+        setBuffer(props.promptBuffer.buffer)
+    }), [props.promptBuffer])
 
     // make and insert rawprompt to buffer
     const handleMakeTag = (index: number, body: string) => {
-        const rawPrompt: RawPrompt = {
-            body: body
-        }
-
-        const tag: Tag = {
-            type: 'RawPrompt',
-            prompt: rawPrompt
-        }
-
-        const bufferObj: BufferObject = {
-            type: 'RawPrompt',
-            tag: tag 
-        }
-
-        const currentBuffer = buffer;
-        currentBuffer.splice(index, 0, bufferObj)
-        setBuffer(currentBuffer)
+        const bufferObj: BufferObject = makeBufferObj("RawPrompt", body)
+        const newBuffer = insertToBuffer(bufferObj, index, true, 1)
+        setBuffer(newBuffer)
     }
 
-    const handlePingCursorLocation = (index: number) => {
+    const handleSubmit = (e: any) => {
+        if (e.key == 'Enter') {
+            handleMakeTag(buffer.length, lastInputRef.current!.value)
+            lastInputRef.current!.value = ''
+        }
+    }
+
+    const handleInsertInput = (index: number) => {
+        const bufferObj: BufferObject = makeBufferObj('InputPrompt')
+        const newBuffer = insertToBuffer(bufferObj, index, false)
+        setBuffer(newBuffer)
+        console.log('insertinput', index)
         setCurrentIndex(index)
+    }
+
+    const handleClickLastInput = () => {
+        console.log('clicked input', buffer.length)
+        setCurrentIndex(buffer.length)
+    }
+
+    const handleSave = () => {
+        // if this promptbuffer DNE, save.
     }
 
     return (
         <div className="PromptTxtArea-Container gray">
-            {buffer.map((obj, i) => {
-                if (obj.type == 'InputPrompt') {
-                    return (
-                        <PromptInput 
-                        key={i} 
-                        index={i} 
-                        makeTag={handleMakeTag}
-                        pingCursorLocation={handlePingCursorLocation}
-                        />
-                    )
-                } else return (
-                    <PromptTag 
-                    key={i}
-                    index={i}
-                    tag={obj.tag!}
-                    pingCursorLocation={handlePingCursorLocation}
-                    />
-                )
-            })}
-            <input className="last-input"></input>
+            <div className="PromptTxtArea-Toolbar">
+                <button className="button-save" onClick={handleSave}>save</button>
+            </div> 
+            <div className="PromptTxtArea-Buffer">
+                {buffer.map((obj, i) => {
+                    switch (obj.type) {
+                        case 'InputPrompt': {
+                            return (
+                                <PromptInput 
+                                key={i} 
+                                index={i} 
+                                makeTag={handleMakeTag}
+                                />
+                            )
+                        }
+                        case 'PromptPadding': {
+                            return (
+                                <PromptPadding
+                                key={i}
+                                index={i}
+                                insertInput={handleInsertInput}
+                                />
+                            )
+                        }
+                        case 'RawPrompt': {
+                            return (
+                                <PromptTag 
+                                key={i}
+                                index={i}
+                                tag={obj.tag!}
+                                />
+                            )
+                        }
+                        case 'PromptObject': {
+                            return (
+                                <PromptTag 
+                                key={i}
+                                index={i}
+                                tag={obj.tag!}
+                                />
+                            )
+                        }
+                    }
+                
+                    })
+                }
+                <input ref={lastInputRef} onKeyPress={handleSubmit} className="input" onClick={handleClickLastInput}></input>
+            </div>
         </div>
     )
 }

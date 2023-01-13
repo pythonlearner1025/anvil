@@ -1,47 +1,34 @@
-import {Tag, PromptObject, RawPrompt} from "../types/PromptUITypes"
+import {Tag, PromptObject } from "../types/PromptUITypes"
+import "./PromptUI.css"
 
 interface Props {
     tag: Tag,
     index: number,
-    pingCursorLocation: (index:number) => void
 }
 
 const PromptTag = (props: Props) => {
 
     const returnBody = (tag: Tag) => {
         if (tag.type == 'PromptObject') {
-            const prompt:any = tag.prompt 
             return (
                 <div className="tag-body promptobject">
-                    {prompt.name}
+                    <p>{tag.body}</p>
                 </div>
             )
         } else if (tag.type == 'RawPrompt') {
-            const prompt:any = tag.prompt
             return (
                 <div className="tag-body rawprompt">
-                    {prompt.body}
+                    <p>{tag.body}</p>
                 </div>
             )
         }
     }
 
-    // calculate if mouse click was in the back padding hitbox
-    const inBackPadding = () => {
-        return true
-    }
-
-    const handlePingCursorLocation = () => {
-        if (!inBackPadding) return
-                                        // handle -1 case
-        props.pingCursorLocation(props.index-1!=-1?props.index-1:0)
-    }
-
+   
     // add padding to behind of tag-container
     return (
         <div 
         className="tag-container"
-        onClick={handlePingCursorLocation}
         >
             {returnBody(props.tag)}
         </div>

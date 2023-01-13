@@ -1,12 +1,18 @@
 import "./PromptUI.css"
 import {PromptObject} from "../types/PromptUITypes"
 interface Props {
-    obj: PromptObject
+    obj: PromptObject,
+    setSelectedObj: (obj: PromptObject)=>void
 }
 
 const PromptSelectableObject = (props: Props) => {
+
+    const handleClick = () => {
+        props.setSelectedObj(props.obj)
+    }
+
     return (
-        <div className="card selectable-card">
+        <div className="card selectable-card" onClick={handleClick}>
             <div className="card-img-top">
                 <img src={props.obj.assetPath}></img>
             </div>

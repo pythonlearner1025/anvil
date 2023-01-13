@@ -1,11 +1,15 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import {PromptObject, PromptBuffer} from "../types/PromptUITypes"
 import PromptTxtArea from "./PromptTxtArea"
 import PromptSelectArea from "./PromptSelectArea"
 import "./PromptUI.css"
 
 // UI layout for anvil
 const PromptUI = () => {
-
+    const [selectedPromptObj, setSelectedPromptObj] = useState<PromptObject|null>(null)
+    const [selectedBuff, setSelectedBuff] = useState<PromptBuffer|null>(null)
+    const handleSetSelectedObj = (obj:PromptObject) => setSelectedPromptObj(obj)
+    const handleSetSelectedBuff = (buff: PromptBuffer) => setSelectedBuff(buff)
     return (
         <div className="PromptUI-container"
             style={{
@@ -16,8 +20,14 @@ const PromptUI = () => {
             }}
         >
             <div className="PromptUI-wrapper">
-                <PromptTxtArea></PromptTxtArea>
-                <PromptSelectArea></PromptSelectArea>
+                <PromptTxtArea 
+                promptObject={selectedPromptObj}
+                promptBuffer={selectedBuff}
+                />
+                <PromptSelectArea 
+                setSelectedObj={handleSetSelectedObj}
+                setSelectedBuff={handleSetSelectedBuff}
+                />
             </div>
         </div>
     )

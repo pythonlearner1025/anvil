@@ -1,9 +1,10 @@
 import {useRef} from "react"
 
+import {useEffect} from "react"
+
 interface Props {
     index: number,
     makeTag: (index:number, body:string) => void,
-    pingCursorLocation: (index:number) => void
 }
 
 const PromptInput = (props: Props) => {
@@ -15,17 +16,11 @@ const PromptInput = (props: Props) => {
         }
     }
 
-    const handlePingCursorLocation = () => {
-        // handle -1 case
-        props.pingCursorLocation(props.index-1)
-    }
-
     return (
         <input 
         ref={inputRef} 
         className="input" 
         onKeyPress={handleSubmit}
-        onClick={handlePingCursorLocation}
         />
     )
 }
