@@ -13,6 +13,14 @@ export type SubCategory = {
     desc?: string
 }
 
+export type RawPrompt = {
+    body: string,
+}
+
+export type Tag = {
+    type: 'RawPrompt' | 'PromptObject',
+    body: RawPrompt | PromptObject
+}
 
 export type PromptObject = {
     name: string,
@@ -20,3 +28,7 @@ export type PromptObject = {
     assetPath?: string,
     desc?: string 
 }
+    
+   
+   
+ 
