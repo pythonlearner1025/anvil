@@ -14,9 +14,27 @@ export type SubCategory = {
 }
 
 
+export type Tag = {
+    type: 'RawPrompt' | 'PromptObject',
+    body: string, 
+    assetPath?: string
+}
+
 export type PromptObject = {
     name: string,
     hasAsset?: boolean,
     assetPath?: string,
     desc?: string 
 }
+
+export type BufferObject = {
+    type: 'RawPrompt' | 'PromptObject' | 'InputPrompt' | 'PromptPadding',
+    tag: Tag | null
+}
+    
+export type PromptBuffer = {
+    body: string,
+    buffer: Array<BufferObject>
+}   
+   
+ 

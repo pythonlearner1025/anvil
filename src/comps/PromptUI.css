@@ -1,4 +1,5 @@
 .PromptUI-container{
+    margin-top: 30px;
     position: absolute;
     display: flex;
 }
@@ -15,8 +16,33 @@
     grid-row: 2/6;
 }
 
-.PromptTxtArea-Container{
+.PromptTxtArea-Container {
     grid-row: 1;
+    display: flex;
+    flex-direction:column;
+}
+
+.button-save{
+    margin-left: 0px;
+    line-height: 10px;
+    text-align: center;
+}
+
+.PromptTxtArea-Toolbar {
+    display:flex;
+    width: 100%;
+    height: 25px;
+    background-color:blueviolet
+}
+
+.PromptTxtArea-Buffer{
+    display: flex;
+    text-align: start;
+    text-size-adjust: 100%;
+    flex-wrap: wrap;
+    justify-content: stretch;
+    overflow-wrap: break-word;
+    gap: 10px;
 }
 
 .PromptSelectArea-Wrapper{
@@ -70,6 +96,25 @@
    gap: 10px;
 }
 
+.tag-body {
+    background-color: blue;
+}
+
+.tag-container {
+    display: flex;
+    height:fit-content;
+    width: fit-content;
+}
+
+.input {
+
+}
+
+.PromptPadding {
+    width: 20px;
+    height: auto;
+    background-color:aqua;
+}
 
 .PromptCategory-Container{
     width: 100%;
