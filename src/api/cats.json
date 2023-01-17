@@ -1,0 +1,9 @@
+{
+    "cat1": [
+        {
+            "name": "subcat1", 
+            "selectableObjects": [{
+                "name": "yo"
+        }]}
+    ]
+}

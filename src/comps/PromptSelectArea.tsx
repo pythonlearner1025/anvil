@@ -21,11 +21,11 @@ const PromptSelectArea = (props: Props) => {
             <div className="card-wrapper">
                 <PromptFavorite setSelectedObj={handleSetSelectedObj}/>
                 <PromptSaved setSelectedBuff={handleSetSelectedBuff}/>
-                {promptCategories.map((c,i) => {
+                {promptCategories.map((category,i) => {
                     return (
                         <PromptCategory
                         key={i}
-                        name={c.name}
+                        category={category}
                         setSelectedObj={handleSetSelectedObj}
                         /> 
                     )

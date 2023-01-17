@@ -16,25 +16,31 @@ def down(obj):
             print(obj[k])
             pass
 
+def makeAssets(root):
+    res = dict()
+    for cat in root.keys():
+        res[cat] = []
+        cat_dict = root[cat]
+        for subcat in cat_dict.keys():
+            subcat_dict = dict()
+            subcat_dict['name'] = subcat
+            subcat_dict['selectableObjects'] = []
+            for obj in cat_dict[subcat]:
+                object_dict = dict()
+                object_dict['name'] = list(obj.keys())[0]
+                object_dict['assetPath'] = obj[list(obj.keys())[0]]
+                subcat_dict['selectableObjects'].append(object_dict)
+            res[cat].append(subcat_dict)
+    return res
+
+
+
 if __name__ == '__main__':
     with open('scraped.json', 'r') as f:
         a = json.load(f)
-        objs = []
-        cats = dict() 
-        for cat in a.keys():
-            cats[cat] = []
-            cat_dict = a[cat]
-            for subcat in cat_dict.keys():
-                cats[cat].append(subcat)
-                for obj in cat_dict[subcat]:
-                    objs.append(obj)
-    
+        assets = makeAssets(a) 
     with open('cats.json', 'w') as f:
-        json.dump(cats, f)
+        json.dump(assets, f)
     exit() 
-    for i in tqdm(range(len(objs))):
-        down(objs[i])
-
-    print(len(os.listdir('/Users/minjunes/anvil/backend/store/assets')))
 
 

@@ -1,6 +1,7 @@
 // https://stackoverflow.com/questions/37233735/interfaces-vs-types-in-typescript
 export type Category = {
     name: string,
+    subCategories: Array<SubCategory>,
     hasAsset?: boolean,
     assetpath?: string,
     desc?: string
@@ -8,6 +9,7 @@ export type Category = {
 
 export type SubCategory = {
     name: string,
+    selectableObjects: Array<PromptObject>,
     hasAsset?: boolean,
     assetPath?: string,
     desc?: string

@@ -11,7 +11,7 @@ interface Props {
 
 const PromptSubCategory = (props: Props) => {
     const [isPressed, setIsPressed] = useState(false)
-    const promptObjects:Array<PromptObject> = getSelectableObject(props.subCategory.name)
+    const promptObjects:Array<PromptObject> = props.subCategory.selectableObjects
 
     const handleOnClick = () => {
         setIsPressed(!isPressed)
