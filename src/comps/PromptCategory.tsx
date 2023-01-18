@@ -1,17 +1,18 @@
 import {useState, useRef} from "react"
-import {SubCategory, PromptObject} from "../types/PromptUITypes"
-import {getSubCategories} from "../utils/getSubCategories"
+import {SubCategory, PromptObject, Category} from "../types/PromptUITypes"
 import PromptSubCategory from "./PromptSubCategory"
 import "./PromptUI.css"
+import "./card.css"
+import "./colors.css"
 
 interface Props {
-   name: string,
+   category: Category,
    setSelectedObj: (obj: PromptObject) => void
 }
 
 const PromptCategory = (props: Props) => {
     const [isPressed, setIsPressed] = useState(false)
-    const subCategories: Array<SubCategory> = getSubCategories(props.name)
+    const subCategories: Array<SubCategory> = props.category.subCategories
 
     const handleOnClick = () => {
         console.log('pressed')
@@ -22,11 +23,18 @@ const PromptCategory = (props: Props) => {
 
     return (
         <div className="card">
-            <div className="card-header purple" onClick={handleOnClick}>
-                <h4>{props.name}</h4>
+            <div className="card-header background-light text-color-primary" 
+            onClick={handleOnClick}
+            style={{
+                borderBottomLeftRadius: !isPressed ? 5 : 0,
+                borderBottomRightRadius: !isPressed ? 5 : 0,
+                borderTopLeftRadius: 5,
+                borderTopRightRadius: 5,
+            }}>
+                <h4>{props.category.name}</h4>
             </div>
             {isPressed ?   
-            <div className="card-body purple">
+            <div className="card-body background-light">
                 <div className="card-wrapper">
                     {subCategories.map((sc,i)=>{
                         return (

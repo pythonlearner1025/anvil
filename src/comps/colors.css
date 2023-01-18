@@ -1,0 +1,43 @@
+.background{
+    background-color: rgb(26, 26, 32)
+}
+
+.background-light{
+    background-color: rgb(40, 44, 48)
+}
+
+.background-light-light{
+    background-color: rgb(60, 65, 70)
+}
+
+.tab-color{
+    background-color: rgb(30, 32, 42)
+}
+
+.background-secondary{
+    background-color: rgb(16, 16, 22)
+}
+
+.text-color-primary{
+    color: rgb(255,255,255)
+}
+
+.text-color-secondary{
+    color: rgb(226, 227, 238)
+}
+
+.border-color{
+    background-color: rgb(30,30,46)
+}
+
+.btn-base-color{
+    background-color: rgb(46,48,68)
+}
+
+.btn-hover-color{
+    background-color: rgb(46,48,48)
+}
+
+.status-good-color{
+    background-color: rgb(125, 255, 100)
+}

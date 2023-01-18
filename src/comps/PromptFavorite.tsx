@@ -16,7 +16,16 @@ const PromptFavorite = (props: Props) => {
     const handleSetSelectedObj = (obj:PromptObject) => props.setSelectedObj(obj)
     return (
         <div className="card">
-            <div className="card-header purple" onClick={handleOnClick}>
+            <div 
+            className="card-header purple" 
+            onClick={handleOnClick}
+            style={{
+                borderBottomLeftRadius: !isPressed ? 5 : 0,
+                borderBottomRightRadius: !isPressed ? 5 : 0,
+                borderTopLeftRadius: 5,
+                borderTopRightRadius: 5,
+            }}
+            >
                 <h4>Favorites</h4>
             </div>
             {isPressed ?   

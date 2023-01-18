@@ -1,5 +1,6 @@
 import {Tag, PromptObject } from "../types/PromptUITypes"
 import "./PromptUI.css"
+import "./colors.css"
 
 interface Props {
     tag: Tag,
@@ -11,14 +12,14 @@ const PromptTag = (props: Props) => {
     const returnBody = (tag: Tag) => {
         if (tag.type == 'PromptObject') {
             return (
-                <div className="tag-body promptobject">
-                    <p>{tag.body}</p>
+                <div className="prompt-tag-body">
+                    {tag.body}
                 </div>
             )
         } else if (tag.type == 'RawPrompt') {
             return (
-                <div className="tag-body rawprompt">
-                    <p>{tag.body}</p>
+                <div className="prompt-tag-body">
+                    {tag.body}
                 </div>
             )
         }
@@ -28,7 +29,7 @@ const PromptTag = (props: Props) => {
     // add padding to behind of tag-container
     return (
         <div 
-        className="tag-container"
+        className="prompt-tag background-light"
         >
             {returnBody(props.tag)}
         </div>
