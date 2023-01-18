@@ -39,11 +39,14 @@ const PromptTxtArea = (props: Props) => {
     const innerHTMLRef = useRef<HTMLDivElement|null>(null)
 
     useEffect((()=> {
-        innerHTMLRef.current!.style.minWidth = '10px'
+        innerHTMLRef.current!.style.minWidth = '30px'
         innerHTMLRef.current!.style.maxWidth = '100%'
         innerHTMLRef.current!.style.height = '20px'
-        innerHTMLRef.current!.style.backgroundColor = 'rgb(26,26,32)'
+        innerHTMLRef.current!.style.backgroundColor = 'rgb(10,10,10)'
         innerHTMLRef.current!.style.outline = '0px solid transparent'
+        innerHTMLRef.current!.style.borderRadius = '15px'
+        innerHTMLRef.current!.style.padding = '5px'
+        innerHTMLRef.current!.style.marginBottom = '5px'
         innerHTMLRef.current!.focus()
     }), [])
 
@@ -93,7 +96,7 @@ const PromptTxtArea = (props: Props) => {
 
     const handleTextAreaClick = () => {
        
-        innerHTMLRef.current!.focus()
+        //innerHTMLRef.current!.focus()
     }
 
 
@@ -123,14 +126,14 @@ const PromptTxtArea = (props: Props) => {
 
     return (
         <div 
-        className="PromptTxtArea-Container background-secondary"
+        className="PromptTxtArea-Container tab-color"
         onClick={handleTextAreaClick}
         >
-            <div className="PromptTxtArea-Toolbar tab-color">
+            <div className="PromptTxtArea-Toolbar background">
                 <button className="button-save status-good-color" onClick={handleSave}>save</button>
                 <button className="button-save status-good-color" onClick={handleClear}>clear</button>
             </div> 
-            <div className="PromptTxtArea-Buffer text-color-primary">
+            <div className="PromptTxtArea-Buffer text-color-secondary">
                 {buffer.map((obj, i) => {
                     switch (obj.type) {
                         case 'PromptInput': {
