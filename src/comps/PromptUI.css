@@ -46,16 +46,21 @@
     flex-wrap: wrap;
     justify-content: stretch;
     overflow-wrap: break-word;
+    padding: 5px;
 }
 
 .prompt-tag {
     display: flex;
-    border-radius: 10px;
+    border-radius: 15px;
+    padding: 5px;
+    margin-bottom: 5px;
 }
 
 .prompt-padding {
-    width:10px;
+    min-width:10px;
+    max-width: 100%;
     height: 20px;
+    margin-bottom: 5px;
 }
 .PromptSelectArea-Container{
     grid-row: 2/6;

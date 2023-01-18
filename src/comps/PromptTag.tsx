@@ -29,7 +29,7 @@ const PromptTag = (props: Props) => {
     // add padding to behind of tag-container
     return (
         <div 
-        className="prompt-tag background-light"
+        className="prompt-tag black"
         >
             {returnBody(props.tag)}
         </div>
