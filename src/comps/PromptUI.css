@@ -9,40 +9,58 @@
     width: inherit;
     height: inherit;
     grid-template-rows: repeat(5, 1fr);
-    gap: 10px;
-}
-
-.PromptSelectArea-Container{
-    grid-row: 2/6;
+    gap: 3px;
 }
 
 .PromptTxtArea-Container {
+    width: 100% !important;
+    height: 100% !important;
     grid-row: 1;
     display: flex;
-    flex-direction:column;
+    flex-wrap:wrap;
+    flex-direction: column;
+    overflow-wrap:break-word;
+    word-break:break-all;
+    border-radius: 5px;
 }
 
 .button-save{
     margin-left: 0px;
     line-height: 10px;
     text-align: center;
+    border-radius: 5px;
 }
 
 .PromptTxtArea-Toolbar {
     display:flex;
     width: 100%;
     height: 25px;
-    background-color:blueviolet
+    background-color:blueviolet;
+    border-radius: 5px;
 }
 
 .PromptTxtArea-Buffer{
     display: flex;
+    flex-direction: row;
     text-align: start;
-    text-size-adjust: 100%;
     flex-wrap: wrap;
     justify-content: stretch;
     overflow-wrap: break-word;
-    gap: 10px;
+}
+
+.prompt-tag {
+    display: flex;
+    border-radius: 10px;
+}
+
+.prompt-padding {
+    width:10px;
+    height: 20px;
+}
+.PromptSelectArea-Container{
+    grid-row: 2/6;
+    overflow: auto;
+    border-radius: 5px;
 }
 
 .PromptSelectArea-Wrapper{
@@ -59,63 +77,6 @@
     height: fit-content;
 }
 
-.card{
-    position: relative;
-    display: flex;
-    flex-direction:column;
-    min-width:0;
-    background-clip:border-box;
-}
-
-.card-header{
-    display: block;
-    border-bottom: none;
-    padding: 1rem;
-    overflow-wrap: break-word;
-    text-align: start;
-    text-size-adjust: 100%
-}
-
-.card-body{
-    box-sizing: border-box;
-    display: block;
-    overflow-wrap: break-word;
-    text-align: start;
-    text-size-adjust: 100%;
-}
-
-.card-wrapper {
-   align-items: flex-start; 
-   box-sizing: border-box;
-   display: flex;
-   flex-wrap: wrap;
-   justify-content: stretch;
-   overflow-wrap: break-word;
-   text-align: start;
-   text-size-adjust: 100%;
-   gap: 10px;
-}
-
-.tag-body {
-    background-color: blue;
-}
-
-.tag-container {
-    display: flex;
-    height:fit-content;
-    width: fit-content;
-}
-
-.input {
-
-}
-
-.PromptPadding {
-    width: 20px;
-    height: auto;
-    background-color:aqua;
-}
-
 .PromptCategory-Container{
     width: 100%;
     height: 100%
@@ -126,14 +87,3 @@
 
 }
 
-.gray {
-    background-color:gray
-}
-
-.purple {
-    background-color:purple;
-}
-
-.smoke {
-    background-color:bisque;
-}

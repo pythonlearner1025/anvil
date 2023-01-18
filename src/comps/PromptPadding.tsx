@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from "react"
 import "./PromptUI.css"
+import "./colors.css"
 
 interface Props {
     index: number,
@@ -9,7 +10,7 @@ interface Props {
 const PromptPadding = (props: Props) => {
     const handleClick = () => props.insertInput(props.index)
     return (
-        <div className="PromptPadding" onClick={handleClick}></div>
+        <div className="prompt-padding" onClick={handleClick}></div>
     )
 }
 

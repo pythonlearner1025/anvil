@@ -18,7 +18,16 @@ const PromptSaved = (props: Props) => {
     const handleSetSelectedBuff = (buff: PromptBuffer) => props.setSelectedBuff(buff)
     return (
         <div className="card">
-            <div className="card-header purple" onClick={handleOnClick}>
+            <div 
+            className="card-header purple" 
+            onClick={handleOnClick}
+            style={{
+                borderBottomLeftRadius: !isPressed ? 5 : 0,
+                borderBottomRightRadius: !isPressed ? 5 : 0,
+                borderTopLeftRadius: 5,
+                borderTopRightRadius: 5,
+            }}
+            >
                 <h4>Saved</h4>
             </div>
             {isPressed ?   

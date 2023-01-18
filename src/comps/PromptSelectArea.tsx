@@ -5,6 +5,8 @@ import PromptCategory from "./PromptCategory"
 import PromptSaved from "./PromptSaved"
 import PromptFavorite from "./PromptFavorite"
 import "./PromptUI.css"
+import "./card.css"
+import "./colors.css"
 
 interface Props {
     setSelectedObj: (obj: PromptObject) => void,
@@ -17,10 +19,9 @@ const PromptSelectArea = (props: Props) => {
     const handleSetSelectedObj = (obj:PromptObject) => props.setSelectedObj(obj)
     const handleSetSelectedBuff = (buff: PromptBuffer) => props.setSelectedBuff(buff)
     return (
-        <div className="PromptSelectArea-Container gray">
+        <div className="PromptSelectArea-Container tab-color">
             <div className="card-wrapper">
-                <PromptFavorite setSelectedObj={handleSetSelectedObj}/>
-                <PromptSaved setSelectedBuff={handleSetSelectedBuff}/>
+                
                 {promptCategories.map((category,i) => {
                     return (
                         <PromptCategory
@@ -34,5 +35,10 @@ const PromptSelectArea = (props: Props) => {
         </div>
     )
 }
+
+/*
+<PromptFavorite setSelectedObj={handleSetSelectedObj}/>
+<PromptSaved setSelectedBuff={handleSetSelectedBuff}/>
+*/
 
 export default PromptSelectArea;

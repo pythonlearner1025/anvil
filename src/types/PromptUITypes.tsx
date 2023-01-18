@@ -30,7 +30,7 @@ export type PromptObject = {
 }
 
 export type BufferObject = {
-    type: 'RawPrompt' | 'PromptObject' | 'InputPrompt' | 'PromptPadding',
+    type: 'RawPrompt' | 'PromptObject' | 'PromptInput' | 'PromptPadding',
     tag: Tag | null
 }
     

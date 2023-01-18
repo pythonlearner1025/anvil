@@ -1,8 +1,9 @@
 import {useState, useRef} from "react"
 import PromptSelectableObject from "./PromptSelectableObject"
-import "./PromptUI.css"
 import {PromptObject, SubCategory} from "../types/PromptUITypes"
-import {getSelectableObject} from "../utils/getSelectableObject";
+import "./PromptUI.css"
+import "./card.css"
+import "./colors.css"
 
 interface Props {
     subCategory: SubCategory,
@@ -21,11 +22,20 @@ const PromptSubCategory = (props: Props) => {
 
     return (
         <div className="card">
-            <div className="card-header smoke" onClick={handleOnClick}>
+            <div 
+            className="card-header background-light-light text-color-secondary" 
+            onClick={handleOnClick}
+            style={{
+                borderBottomLeftRadius: !isPressed ? 5 : 0,
+                borderBottomRightRadius: !isPressed ? 5 : 0,
+                borderTopLeftRadius: 5,
+                borderTopRightRadius: 5,
+            }} 
+            >
                 <h4>{props.subCategory.name}</h4>
             </div>
             {isPressed ?   
-            <div className="card-body smoke">
+            <div className="card-body background-light-light">
                 <div className="card-wrapper">
                     {promptObjects.map((obj,i)=>{
                         return (

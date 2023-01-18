@@ -1,0 +1,64 @@
+.card {
+    position: relative;
+    display: flex;
+    flex-direction:column;
+    min-width:0;
+    background-clip:border-box;
+    margin-bottom: 0rem;
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.card-header{
+    display: flex;
+    align-items:center;
+    border-bottom: none;
+    overflow-wrap: break-word;
+    text-align: start;
+    text-size-adjust: 100%;
+    border-radius: 5px;
+    padding: 0.68rem;
+    height: 30px;
+}
+
+.card-body{
+    box-sizing: border-box;
+    display: block;
+    overflow-wrap: break-word;
+    text-align: center;
+    text-size-adjust: 100%;
+    padding-bottom: 0.5rem;
+}
+
+.card-wrapper{
+   align-items: flex-start; 
+   box-sizing: border-box;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: stretch;
+   overflow-wrap: break-word;
+   text-align: start;
+   text-size-adjust: 100%;
+   padding-right: 0.5rem;
+}
+
+.selectable-card{
+    border-radius: 5px;
+}
+
+.card-img-top{
+    margin: auto;
+}
+
+.card-title{
+   font-size: small; 
+}
+
+.card-footer{
+
+}
+
+.card-img-content{
+    width: 150px;
+    height: 150px;
+}
