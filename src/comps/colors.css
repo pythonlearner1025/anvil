@@ -1,21 +1,21 @@
 .black {
-    background-color: rgb(10,10,10)
+    background-color: #383B53;
 }
 
 .background{
-    background-color: rgb(26, 26, 32)
+    background-color: rgb(18, 18, 27)
 }
 
 .background-light{
-    background-color: rgb(40, 44, 48)
+    background-color:  #383B53;
 }
 
 .background-light-light{
-    background-color: rgb(60, 65, 70)
+    background-color: #57627077;
 }
 
 .tab-color{
-    background-color: rgb(30, 32, 42)
+    background-color: rgb(32, 34, 44)
 }
 
 .background-secondary{
@@ -43,5 +43,6 @@
 }
 
 .status-good-color{
-    background-color: rgb(125, 255, 100)
+    background-color: #7246eb;
+    color: black;
 }

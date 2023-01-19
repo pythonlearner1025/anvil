@@ -1,6 +1,4 @@
 .PromptUI-container{
-    margin-top: 30px;
-    position: absolute;
     display: flex;
 }
 
@@ -9,7 +7,6 @@
     width: inherit;
     height: inherit;
     grid-template-rows: repeat(5, 1fr);
-    gap: 3px;
 }
 
 .PromptTxtArea-Container {
@@ -21,11 +18,10 @@
     flex-direction: column;
     overflow-wrap:break-word;
     word-break:break-all;
-    border-radius: 5px;
 }
 
 .button-save{
-    margin-left: 0px;
+    margin-left: 3px;
     line-height: 10px;
     text-align: center;
     border-radius: 5px;
@@ -34,7 +30,9 @@
 .PromptTxtArea-Toolbar {
     display:flex;
     width: 100%;
-    height: 25px;
+    height: 20px;
+    padding-top:3px;
+    padding-bottom: 3px;
     background-color:blueviolet;
     border-radius: 5px;
 }
@@ -47,6 +45,7 @@
     justify-content: stretch;
     overflow-wrap: break-word;
     padding: 5px;
+    align-content: flext-start;
 }
 
 .prompt-tag {
@@ -57,15 +56,13 @@
 }
 
 .prompt-padding {
-    min-width:10px;
-    max-width: 100%;
+    width: 8px;
     height: 20px;
     margin-bottom: 5px;
 }
 .PromptSelectArea-Container{
     grid-row: 2/6;
     overflow: auto;
-    border-radius: 5px;
 }
 
 .PromptSelectArea-Wrapper{

@@ -12,6 +12,7 @@ interface Props {
     promptBuffer: PromptBuffer | null
 }
 
+
 const makeBufferObj = (type: 'RawPrompt' | 'PromptObject' | 'PromptInput' | 'PromptPadding', body?: string, assetPath?: string): BufferObject => {
     if (type !== 'PromptInput' && type !== 'PromptPadding')
     return {
@@ -35,24 +36,46 @@ const makeBufferObj = (type: 'RawPrompt' | 'PromptObject' | 'PromptInput' | 'Pro
 
 const PromptTxtArea = (props: Props) => {
     const [buffer, setBuffer] = useState<Array<BufferObject>>([])
+    const [rows, setRows] = useState<Array<number>>([])
     const [currentIndex, setCurrentIndex] = useState(0)
     const innerHTMLRef = useRef<HTMLDivElement|null>(null)
+    const bufferRef = useRef<HTMLDivElement|null>(null)
+    const containerRef = useRef<HTMLDivElement|null>(null)
+
 
     useEffect((()=> {
         innerHTMLRef.current!.style.minWidth = '30px'
         innerHTMLRef.current!.style.maxWidth = '100%'
         innerHTMLRef.current!.style.height = '20px'
-        innerHTMLRef.current!.style.backgroundColor = 'rgb(10,10,10)'
+        innerHTMLRef.current!.style.backgroundColor = '#383B53'
         innerHTMLRef.current!.style.outline = '0px solid transparent'
         innerHTMLRef.current!.style.borderRadius = '15px'
         innerHTMLRef.current!.style.padding = '5px'
         innerHTMLRef.current!.style.marginBottom = '5px'
+        innerHTMLRef.current!.style.marginLeft = '5px'
         innerHTMLRef.current!.focus()
     }), [])
 
     useEffect((()=> {
-        console.log(buffer)
+        //setRows(getRows(bufferRef.current!.children))
     }), [buffer])
+    
+    /*
+    const getRows = (divs: HTMLCollection): Array<number> => {
+        const rows = []
+        const containerWidth = containerRef.current!.offsetWidth
+        const padding = 5
+        const rowWidth = containerWidth - padding*2
+        var width = 0;
+        for (let i=0; i<divs.length; i++) {
+            const div:any = divs[i]
+            const divWidth = div.offsetWidth
+            width+=divWidth
+            rows.push(Math.floor(width / rowWidth))
+        }
+        return rows 
+    }
+    */
 
     const insertToBuffer = (obj: BufferObject, idx: number, padding=true, del=0):Array<BufferObject> => {
         const currentBuffer = buffer;
@@ -91,7 +114,6 @@ const PromptTxtArea = (props: Props) => {
         const newBuffer = insertToBuffer(bufferObj, index, false)
         setBuffer(newBuffer)
         setCurrentIndex(index)
-        console.log('insert')
     }
 
     const handleTextAreaClick = () => {
@@ -108,8 +130,19 @@ const PromptTxtArea = (props: Props) => {
             innerHTMLRef.current!.focus()
         }
     }
-    const handleSave = () => {
+
+    const makeText = (divs: HTMLCollection):string => {
+        var res = ''
+        for (let i=0; i<divs.length; i++) {
+            const div:any = divs[i]
+            res += div.innerText + ' '
+        }
+        return res
+    }
+
+    const handleCopy = () => {
         // if this promptbuffer DNE, save.
+        navigator.clipboard.writeText(makeText(bufferRef.current!.children))
     }
 
     const handleInnerHTMLChange = () => {
@@ -126,14 +159,18 @@ const PromptTxtArea = (props: Props) => {
 
     return (
         <div 
+        ref={containerRef}
         className="PromptTxtArea-Container tab-color"
         onClick={handleTextAreaClick}
         >
             <div className="PromptTxtArea-Toolbar background">
-                <button className="button-save status-good-color" onClick={handleSave}>save</button>
+                <button className="button-save status-good-color" onClick={handleCopy}>copy</button>
                 <button className="button-save status-good-color" onClick={handleClear}>clear</button>
             </div> 
-            <div className="PromptTxtArea-Buffer text-color-secondary">
+            <div 
+            ref={bufferRef}
+            className="PromptTxtArea-Buffer text-color-secondary"
+            >
                 {buffer.map((obj, i) => {
                     switch (obj.type) {
                         case 'PromptInput': {
@@ -151,6 +188,7 @@ const PromptTxtArea = (props: Props) => {
                                 key={i}
                                 index={i}
                                 insertInput={handleInsertInput}
+                                //rows={rows}
                                 />
                             )
                         }

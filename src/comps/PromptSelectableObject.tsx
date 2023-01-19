@@ -14,7 +14,7 @@ const PromptSelectableObject = (props: Props) => {
     }
 
     return (
-        <div className="card selectable-card background-light-light" onClick={handleClick}>
+        <div className="card selectable-card" onClick={handleClick}>
             <div className="card-img-top">
                 <img src={props.obj.assetPath} className="card-img-content"></img>
             </div>
