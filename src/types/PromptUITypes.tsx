@@ -15,7 +15,6 @@ export type SubCategory = {
     desc?: string
 }
 
-
 export type Tag = {
     type: 'RawPrompt' | 'PromptObject',
     body: string, 
@@ -31,7 +30,8 @@ export type PromptObject = {
 
 export type BufferObject = {
     type: 'RawPrompt' | 'PromptObject' | 'PromptInput' | 'PromptPadding',
-    tag: Tag | null
+    tag: Tag | null,
+    grow?: boolean
 }
     
 export type PromptBuffer = {

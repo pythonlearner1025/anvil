@@ -9,7 +9,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <PromptUI></PromptUI>
+    <div className="base">
+      <PromptUI></PromptUI>
+    </div>
   </React.StrictMode>
 );
 

@@ -6,11 +6,16 @@ interface Props {
     index: number,
     insertInput: (index: number) => void
 }
-
 const PromptPadding = (props: Props) => {
+
+   
+
     const handleClick = () => props.insertInput(props.index)
     return (
-        <div className="prompt-padding" onClick={handleClick}></div>
+        <div 
+        className="prompt-padding" 
+        onClick={handleClick}
+        ></div>
     )
 }
 

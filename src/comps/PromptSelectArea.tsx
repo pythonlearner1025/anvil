@@ -20,6 +20,9 @@ const PromptSelectArea = (props: Props) => {
     const handleSetSelectedBuff = (buff: PromptBuffer) => props.setSelectedBuff(buff)
     return (
         <div className="PromptSelectArea-Container tab-color">
+             <div className="PromptTxtArea-Toolbar background">
+
+             </div>
             <div className="card-wrapper">
                 
                 {promptCategories.map((category,i) => {
