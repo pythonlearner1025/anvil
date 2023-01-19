@@ -1,8 +1,8 @@
 # RoadMap
 
-- [ ] Build for Node.js react to be run locally 
+- [x] Build for Node.js react to be run locally 
 
-- [ ] Build for Chrome Extension
+- [x] Build for Chrome Extension
 
 - [ ] Build for InvokeAI integration
 
