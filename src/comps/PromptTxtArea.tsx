@@ -3,7 +3,7 @@ import PromptTag from "./PromptTag"
 import PromptInput from "./PromptInput"
 import PromptPadding from "./PromptPadding"
 import {PromptObject, BufferObject, PromptBuffer}  from "../types/PromptUITypes"
-import ContentEditable from "react-contenteditable"
+import ContentEditable from "../utils/ContentEditable"
 import "./PromptUI.css"
 import "./colors.css"
 
@@ -36,7 +36,6 @@ const makeBufferObj = (type: 'RawPrompt' | 'PromptObject' | 'PromptInput' | 'Pro
 
 const PromptTxtArea = (props: Props) => {
     const [buffer, setBuffer] = useState<Array<BufferObject>>([])
-    const [rows, setRows] = useState<Array<number>>([])
     const [currentIndex, setCurrentIndex] = useState(0)
     const innerHTMLRef = useRef<HTMLDivElement|null>(null)
     const bufferRef = useRef<HTMLDivElement|null>(null)
@@ -57,36 +56,9 @@ const PromptTxtArea = (props: Props) => {
     }), [])
 
     useEffect((()=> {
-        //setRows(getRows(bufferRef.current!.children))
+        console.log('updated buffer', buffer)
     }), [buffer])
     
-    /*
-    const getRows = (divs: HTMLCollection): Array<number> => {
-        const rows = []
-        const containerWidth = containerRef.current!.offsetWidth
-        const padding = 5
-        const rowWidth = containerWidth - padding*2
-        var width = 0;
-        for (let i=0; i<divs.length; i++) {
-            const div:any = divs[i]
-            const divWidth = div.offsetWidth
-            width+=divWidth
-            rows.push(Math.floor(width / rowWidth))
-        }
-        return rows 
-    }
-    */
-
-    const insertToBuffer = (obj: BufferObject, idx: number, padding=true, del=0):Array<BufferObject> => {
-        const currentBuffer = buffer;
-        currentBuffer.splice(idx, del, obj)
-        if (padding) currentBuffer.splice(idx, 0, makeBufferObj('PromptPadding'))
-        const newBuffer: Array<BufferObject> = []
-        currentBuffer.forEach(e => newBuffer.push(e))
-        setCurrentIndex(currentIndex + 2)
-        return newBuffer
-    }
-
     // insert selected PromptObject to cursor location
     useEffect((()=> {
         if (props.promptObject == null) return
@@ -102,10 +74,24 @@ const PromptTxtArea = (props: Props) => {
         setBuffer(props.promptBuffer.buffer)
     }), [props.promptBuffer])
 
+    const insertToBuffer = (obj: BufferObject, idx: number, padding=true, del=0):Array<BufferObject> => {
+        const currentBuffer = buffer;
+        currentBuffer.splice(idx, del, obj)
+        if (padding) {
+            currentBuffer.splice(idx, 0, makeBufferObj('PromptPadding'))
+            setCurrentIndex(currentIndex + 2)
+        } 
+        const newBuffer: Array<BufferObject> = []
+        currentBuffer.forEach(e => newBuffer.push(e))
+        return newBuffer
+    }
     // make and insert rawprompt to buffer
     const handleMakeTag = (index: number, body: string) => {
+        console.log('////')
         const bufferObj: BufferObject = makeBufferObj("RawPrompt", body)
+        console.log('buffer before', buffer)
         const newBuffer = insertToBuffer(bufferObj, index, true, 1)
+        console.log('buffer after', newBuffer)
         setBuffer(newBuffer)
     }
 
@@ -121,8 +107,8 @@ const PromptTxtArea = (props: Props) => {
         //innerHTMLRef.current!.focus()
     }
 
-
     const handleSubmit = (e: any) => {
+        console.log('buffer on enter', buffer)
         if (e.key == 'Enter') {
             handleMakeTag(buffer.length, innerHTMLRef.current!.innerText)
             innerHTMLRef.current!.innerText = '' 
@@ -154,7 +140,8 @@ const PromptTxtArea = (props: Props) => {
 
     const handleClear = () => {
         innerHTMLRef.current!.style.marginLeft = '0px'
-        setBuffer([])
+        const emptyBuffer: Array<BufferObject> = []
+        setBuffer(emptyBuffer)
     }
 
     return (
@@ -215,11 +202,11 @@ const PromptTxtArea = (props: Props) => {
                     })
                 }
             <ContentEditable
-                 innerRef={innerHTMLRef}
-                 html={"<div></div>"}
-                 disabled={false}
-                 onChange={handleInnerHTMLChange}
-                 onKeyDown={handleSubmit}
+            innerRef={innerHTMLRef}
+            html={"<div></div>"}
+            disabled={false}
+            onChange={handleInnerHTMLChange}
+            onKeyDown={handleSubmit}
             />
             </div>
         </div>
@@ -284,3 +271,21 @@ export default PromptTxtArea;
 */
 
 // to be later replaced with redux
+
+/*
+const getRows = (divs: HTMLCollection): Array<number> => {
+    const rows = []
+    const containerWidth = containerRef.current!.offsetWidth
+    const padding = 5
+    const rowWidth = containerWidth - padding*2
+    var width = 0;
+    for (let i=0; i<divs.length; i++) {
+        const div:any = divs[i]
+        const divWidth = div.offsetWidth
+        width+=divWidth
+        rows.push(Math.floor(width / rowWidth))
+    }
+    return rows 
+}
+*/
+

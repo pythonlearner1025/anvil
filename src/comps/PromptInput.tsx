@@ -1,5 +1,5 @@
 import {useRef, useEffect} from "react"
-import ContentEditable from "react-contenteditable"
+import ContentEditable from "../utils/ContentEditable"
 import "./colors.css"
 
 interface Props {
@@ -11,6 +11,7 @@ const PromptInput = (props: Props) => {
     const innerHTMLRef = useRef<HTMLDivElement|null>(null)
 
     useEffect((() => {
+        innerHTMLRef.current!.innerText = ''
         innerHTMLRef.current!.style.minWidth = '30px'
         innerHTMLRef.current!.style.maxWidth = '100%'
         innerHTMLRef.current!.style.minHeight = '20px'
@@ -26,12 +27,18 @@ const PromptInput = (props: Props) => {
     const handleSubmit = (e: any) => {
         if (e.key == 'Enter') {
             props.makeTag(props.index, innerHTMLRef.current!.innerText)
+            innerHTMLRef.current!.innerText = ''
         }
     }
 
     const handleFocus = () => {innerHTMLRef.current!.focus()}
 
-    const handleInnerHTMLChange = () => {}
+    const handleInnerHTMLChange = () => {
+        var match = /\r|\n/.exec(innerHTMLRef.current!.innerText)
+        if (match) {
+            innerHTMLRef.current!.innerText = ''
+        }
+    }
     
     return (
         <ContentEditable

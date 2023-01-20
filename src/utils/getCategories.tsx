@@ -1,5 +1,5 @@
 import {Category, SubCategory} from "../types/PromptUITypes"
-import cats from "../api/cats.json"
+import cats from "../config/cats.json"
 
 
 export const getCategories = (): Array<Category> => {

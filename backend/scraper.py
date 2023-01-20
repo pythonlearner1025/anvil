@@ -3,10 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time, json
-
 # Create a new instance of the Chrome driver
-driver = webdriver.Chrome()
-
+driver = webdriver.Chrome(executable_path='/Users/minjunes/Downloads/chromedriver 2')
 # Navigate to the website
 driver.get("https://promptomania.com/stable-diffusion-prompt-builder/")
 
@@ -39,6 +37,19 @@ def getClass(L, name):
 def getCardGroup(parent):
     c = parent.find_element(By.XPATH, './*')
     return c.find_elements(By.XPATH, './*')
+
+# select base image
+mores = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.more")))
+more_child = mores[0].find_elements(By.XPATH, './*')[0]
+options_wrapper = more_child.find_elements(By.XPATH, './*')[0]
+options = options_wrapper.find_elements(By.XPATH, './*')
+
+face = 0
+sphere = 1
+land = 2
+
+clickable = options[land].find_elements(By.XPATH, './*')[0]
+clickable.click()
 
 # Find all the div elements with the class "card"
 readmore = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.readmore-text.clickable-title")))
@@ -93,6 +104,6 @@ for category, categorytext in zip(categories, categorytexts):
             else:
                 resdict[categorytext][subcategorytext].append({name: src}) 
                 
-with open('scraped.json', 'w') as f:
+with open('land.json', 'w') as f:
     json.dump(resdict, f)
 driver.close()

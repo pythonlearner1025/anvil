@@ -3,6 +3,7 @@ import {useState} from "react"
 import {PromptObject} from "../types/PromptUITypes"
 import {getFavorites} from "../utils/getFavorites"
 import PromptSelectableObject from "./PromptSelectableObject"
+import "./colors.css"
 
 interface Props {
     setSelectedObj: (obj: PromptObject) => void
@@ -37,6 +38,7 @@ const PromptFavorite = (props: Props) => {
                             key={i} 
                             obj={obj}
                             setSelectedObj={handleSetSelectedObj}
+                            base={'favorite'}
                             />
                         )
                     })} 

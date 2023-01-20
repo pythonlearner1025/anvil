@@ -3,6 +3,7 @@ import {useState} from "react"
 import {PromptBuffer} from "../types/PromptUITypes"
 import {getSaved} from "../utils/getSaved"
 import PromptSelectableBuffer from "./PromptSelectableBuffer"
+import "./colors.css"
 
 
 interface Props {

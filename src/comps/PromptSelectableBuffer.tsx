@@ -1,4 +1,5 @@
 import {PromptBuffer} from "../types/PromptUITypes"
+import "./colors.css"
 
 interface Props {
     buffer: PromptBuffer,
