@@ -8,6 +8,7 @@ import "./colors.css"
 interface Props {
    category: Category,
    setSelectedObj: (obj: PromptObject) => void
+   base: string
 }
 
 const PromptCategory = (props: Props) => {
@@ -42,6 +43,7 @@ const PromptCategory = (props: Props) => {
                             key={i} 
                             subCategory={sc}
                             setSelectedObj={handleSetSelectedObj}
+                            base={props.base}
                             />
                         )
                     })} 
