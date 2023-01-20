@@ -1,0 +1,15 @@
+{
+  "short_name": "Anvil",
+  "name": "Anvil",
+  "manifest_version": 3,
+  "version": "1.0.1",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "icons": {
+    "32": "anvil_32.png",
+    "48": "anvil_48.png",
+    "128": "anvil_128.png"
+  },
+  "description": "Anvil is a tool that lets you hammer out better prompts"
+}

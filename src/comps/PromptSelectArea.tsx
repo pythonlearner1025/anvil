@@ -6,6 +6,7 @@ import PromptBaseSetting from "./PromptBaseSetting"
 import "./PromptUI.css"
 import "./card.css"
 import "./colors.css"
+import PromptArtists from './PromptArtists';
 
 interface Props {
     setSelectedObj: (obj: PromptObject) => void,
@@ -33,7 +34,7 @@ const PromptSelectArea = (props: Props) => {
         className="PromptSelectArea-Container tab-color"
         >
              <div className="PromptTxtArea-Toolbar background">
-                <button className="button-save status-good-color" onClick={handleShowBaseSettings}>Set Base</button>
+                <button className="button-save status-good-color" onClick={handleShowBaseSettings}>Change Base</button>
              </div>
              {showBaseSettings?
              <PromptBaseSetting 
@@ -43,7 +44,10 @@ const PromptSelectArea = (props: Props) => {
              />
              : null }
             <div className="card-wrapper top">
-                
+                <PromptArtists
+                setSelectedObj={handleSetSelectedObj} 
+                base={selectedBase}
+                />
                 {promptCategories.map((category,i) => {
                     return (
                         <PromptCategory
