@@ -62,7 +62,8 @@ const PromptTxtArea = (props: Props) => {
     // insert selected PromptObject to cursor location
     useEffect((()=> {
         if (props.promptObject == null) return
-        const bufferObj: BufferObject = makeBufferObj("PromptObject",props.promptObject.name, props.promptObject.assetPath)
+        const name = props.promptObject.displayName?props.promptObject.displayName:props.promptObject.name
+        const bufferObj: BufferObject = makeBufferObj("PromptObject",name, props.promptObject.assetPath)
         var del = 0
         if (currentIndex < buffer.length && buffer[currentIndex].type == 'PromptInput') del = 1
         const newBuffer = insertToBuffer(bufferObj, currentIndex, true, del)
@@ -76,22 +77,21 @@ const PromptTxtArea = (props: Props) => {
 
     const insertToBuffer = (obj: BufferObject, idx: number, padding=true, del=0):Array<BufferObject> => {
         const currentBuffer = buffer;
-        currentBuffer.splice(idx, del, obj)
         if (padding) {
-            currentBuffer.splice(idx, 0, makeBufferObj('PromptPadding'))
+            currentBuffer.splice(idx, del, makeBufferObj('PromptPadding'), obj)
             setCurrentIndex(currentIndex + 2)
-        } 
+        } else currentBuffer.splice(idx, del, obj) 
         const newBuffer: Array<BufferObject> = []
         currentBuffer.forEach(e => newBuffer.push(e))
         return newBuffer
     }
     // make and insert rawprompt to buffer
     const handleMakeTag = (index: number, body: string) => {
-        console.log('////')
+        //console.log('////')
         const bufferObj: BufferObject = makeBufferObj("RawPrompt", body)
-        console.log('buffer before', buffer)
+        //console.log('buffer before', buffer)
         const newBuffer = insertToBuffer(bufferObj, index, true, 1)
-        console.log('buffer after', newBuffer)
+        //console.log('buffer after', newBuffer)
         setBuffer(newBuffer)
     }
 
@@ -108,13 +108,22 @@ const PromptTxtArea = (props: Props) => {
     }
 
     const handleSubmit = (e: any) => {
-        console.log('buffer on enter', buffer)
-        if (e.key == 'Enter') {
-            handleMakeTag(buffer.length, innerHTMLRef.current!.innerText)
-            innerHTMLRef.current!.innerText = '' 
-            innerHTMLRef.current!.style.marginLeft = '10px'
-            innerHTMLRef.current!.focus()
+        switch (e.key) {
+            case 'Enter': {
+                handleMakeTag(buffer.length, innerHTMLRef.current!.innerText)
+                innerHTMLRef.current!.innerText = '' 
+                innerHTMLRef.current!.style.marginLeft = '10px'
+                innerHTMLRef.current!.focus()
+                break;
+            }
+            case 'Backspace': {
+                if (innerHTMLRef.current!.innerText != '') break;
+                // delete 2: prompt tag + padding
+                handleDelete(buffer.length-1)
+                break;
+            }
         }
+        return
     }
 
     const makeText = (divs: HTMLCollection):string => {
@@ -144,6 +153,23 @@ const PromptTxtArea = (props: Props) => {
         setBuffer(emptyBuffer)
     }
 
+    // delete both the raw prompt + padding AND insert PromptInput
+    const handleDelete = (index: number) => {
+        if (index == buffer.length-1) {
+            const currentBuffer = buffer
+            currentBuffer.splice(index-3, 2)
+            const newBuffer: Array<BufferObject> = []
+            currentBuffer.forEach(obj => newBuffer.push(obj)) 
+            setBuffer(newBuffer)
+            return
+        }
+        const currentBuffer = buffer
+        currentBuffer.splice(index-2,index-2<0?0:2)
+        const newBuffer: Array<BufferObject> = []
+        currentBuffer.forEach(obj => newBuffer.push(obj))
+        setBuffer(newBuffer)
+    }
+
     return (
         <div 
         ref={containerRef}
@@ -166,6 +192,7 @@ const PromptTxtArea = (props: Props) => {
                                 key={i} 
                                 index={i} 
                                 makeTag={handleMakeTag}
+                                delete={handleDelete}
                                 />
                             )
                         }

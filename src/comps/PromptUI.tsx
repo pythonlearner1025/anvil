@@ -34,8 +34,8 @@ export default PromptUI;
 
 /*
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Anvil",
+  "name": "Anvil",
   "manifest_version": 3,
   "version": "1.0.1",
   "action": {

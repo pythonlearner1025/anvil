@@ -5,6 +5,7 @@ import "./colors.css"
 interface Props {
     index: number,
     makeTag: (index:number, body:string) => void,
+    delete: (index:number) => void
 }
 
 const PromptInput = (props: Props) => {
@@ -25,9 +26,18 @@ const PromptInput = (props: Props) => {
     }), [])
 
     const handleSubmit = (e: any) => {
-        if (e.key == 'Enter') {
-            props.makeTag(props.index, innerHTMLRef.current!.innerText)
-            innerHTMLRef.current!.innerText = ''
+     
+        switch (e.key) {
+            case 'Enter': {
+                props.makeTag(props.index, innerHTMLRef.current!.innerText)
+                innerHTMLRef.current!.innerText = ''
+                break;
+            }
+            case 'Backspace': {
+                if (innerHTMLRef.current!.innerText != '') break;
+                props.delete(props.index)
+                break;
+            }
         }
     }
 

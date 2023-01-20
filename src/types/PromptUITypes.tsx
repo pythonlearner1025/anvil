@@ -23,6 +23,7 @@ export type Tag = {
 
 export type PromptObject = {
     name: string,
+    displayName?: string
     hasAsset?: boolean,
     assetPath?: string,
     desc?: string 

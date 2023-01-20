@@ -24,20 +24,17 @@ const PromptBaseSetting = (props: Props) => {
         >
             <div className="PromptBaseSetting-wrapper">
                 <PromptSelectableObject
-                displayName={'Beautiful Face'}
-                obj={{name: 'beautiful_face'}}
+                obj={{name: 'beautiful_face', displayName: 'Beautiful Face'}}
                 setSelectedObj={handleSetSelectedBase}
                 base={'base'} 
                 />
                 <PromptSelectableObject
-                displayName={'Sphere'}
-                obj={{name: 'sphere'}}
+                obj={{name: 'sphere', displayName: 'Sphere'}}
                 setSelectedObj={handleSetSelectedBase} 
                 base={'base'}
                 />
                 <PromptSelectableObject
-                displayName={'Landscape'}
-                obj={{name: 'landscape'}}
+                obj={{name: 'landscape', displayName: 'Landscape'}}
                 setSelectedObj={handleSetSelectedBase} 
                 base={'base'}
                 />

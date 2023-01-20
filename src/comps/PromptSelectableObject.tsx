@@ -4,6 +4,7 @@ import config from "../config/config.json"
 import "./PromptUI.css"
 import "./card.css"
 import "./colors.css"
+const utf8 = require('utf8')
 interface Props {
     displayName?: string
     obj: PromptObject
@@ -29,7 +30,7 @@ const PromptSelectableObject = (props: Props) => {
                 lineHeight: 0
             }}
             >
-                <p className="card-title">{props.obj.name}</p>
+                <p className="card-title">{props.obj.displayName?props.obj.displayName:props.obj.name}</p>
             </div>
             <div className="card-footer"></div>
         </div>
