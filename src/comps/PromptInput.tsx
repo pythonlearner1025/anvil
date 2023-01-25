@@ -5,7 +5,8 @@ import "./colors.css"
 interface Props {
     index: number,
     makeTag: (index:number, body:string) => void,
-    delete: (index:number) => void
+    delete: (index:number) => void,
+    handleFocus: (index:number) => void
 }
 
 const PromptInput = (props: Props) => {
@@ -41,7 +42,10 @@ const PromptInput = (props: Props) => {
         }
     }
 
-    const handleFocus = () => {innerHTMLRef.current!.focus()}
+    const handleFocus = () => {
+        innerHTMLRef.current!.focus()
+        props.handleFocus(props.index)
+    }
 
     const handleInnerHTMLChange = () => {
         var match = /\r|\n/.exec(innerHTMLRef.current!.innerText)

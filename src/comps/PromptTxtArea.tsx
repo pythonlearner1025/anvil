@@ -46,7 +46,7 @@ const PromptTxtArea = (props: Props) => {
         innerHTMLRef.current!.style.minWidth = '30px'
         innerHTMLRef.current!.style.maxWidth = '100%'
         innerHTMLRef.current!.style.height = '20px'
-        innerHTMLRef.current!.style.backgroundColor = '#383B53'
+        innerHTMLRef.current!.style.backgroundColor = 'rgb(10,10,10)'
         innerHTMLRef.current!.style.outline = '0px solid transparent'
         innerHTMLRef.current!.style.borderRadius = '15px'
         innerHTMLRef.current!.style.padding = '5px'
@@ -54,7 +54,7 @@ const PromptTxtArea = (props: Props) => {
         innerHTMLRef.current!.style.marginLeft = '5px'
         innerHTMLRef.current!.focus()
     }), [])
-
+    
     useEffect((()=> {
         console.log('updated buffer', buffer)
     }), [buffer])
@@ -64,9 +64,11 @@ const PromptTxtArea = (props: Props) => {
         if (props.promptObject == null) return
         const name = props.promptObject.displayName?props.promptObject.displayName:props.promptObject.name
         const bufferObj: BufferObject = makeBufferObj("PromptObject",name, props.promptObject.assetPath)
-        var del = 0
-        if (currentIndex < buffer.length && buffer[currentIndex].type == 'PromptInput') del = 1
-        const newBuffer = insertToBuffer(bufferObj, currentIndex, true, del)
+        const currentBuffer = buffer
+        currentBuffer.splice(currentIndex, 0, makeBufferObj('PromptPadding'), bufferObj)
+        const newBuffer: Array<BufferObject> = []
+        currentBuffer.forEach(obj=>newBuffer.push(obj))
+        setCurrentIndex(currentIndex+2)
         setBuffer(newBuffer)
     }), [props.promptObject])
 
@@ -75,29 +77,32 @@ const PromptTxtArea = (props: Props) => {
         setBuffer(props.promptBuffer.buffer)
     }), [props.promptBuffer])
 
-    const insertToBuffer = (obj: BufferObject, idx: number, padding=true, del=0):Array<BufferObject> => {
+    // make and insert rawprompt to buffer
+    const handleMakeTag = (idx: number, body: string) => {
+        //console.log('////')
+        const obj: BufferObject = makeBufferObj("RawPrompt", body)
+        //console.log('buffer before', buffer)
         const currentBuffer = buffer;
-        if (padding) {
-            currentBuffer.splice(idx, del, makeBufferObj('PromptPadding'), obj)
-            setCurrentIndex(currentIndex + 2)
-        } else currentBuffer.splice(idx, del, obj) 
+        if (idx != buffer.length) {
+            currentBuffer.splice(idx, 1, makeBufferObj('PromptPadding'), obj, makeBufferObj('PromptInput'))
+            setCurrentIndex(currentIndex+3)
+        }
+        else {
+            currentBuffer.splice(idx, 1, makeBufferObj('PromptPadding'), obj)
+            setCurrentIndex(currentIndex+2)
+        }
         const newBuffer: Array<BufferObject> = []
         currentBuffer.forEach(e => newBuffer.push(e))
-        return newBuffer
-    }
-    // make and insert rawprompt to buffer
-    const handleMakeTag = (index: number, body: string) => {
-        //console.log('////')
-        const bufferObj: BufferObject = makeBufferObj("RawPrompt", body)
-        //console.log('buffer before', buffer)
-        const newBuffer = insertToBuffer(bufferObj, index, true, 1)
         //console.log('buffer after', newBuffer)
         setBuffer(newBuffer)
     }
 
     const handleInsertInput = (index: number) => {
         const bufferObj: BufferObject = makeBufferObj('PromptInput')
-        const newBuffer = insertToBuffer(bufferObj, index, false)
+        const currentBuffer = buffer;
+        currentBuffer.splice(index, 0, bufferObj)
+        const newBuffer: Array<BufferObject> = []
+        currentBuffer.forEach(obj=>newBuffer.push(obj))
         setBuffer(newBuffer)
         setCurrentIndex(index)
     }
@@ -151,23 +156,60 @@ const PromptTxtArea = (props: Props) => {
         innerHTMLRef.current!.style.marginLeft = '0px'
         const emptyBuffer: Array<BufferObject> = []
         setBuffer(emptyBuffer)
+        setCurrentIndex(0)
     }
 
     // delete both the raw prompt + padding AND insert PromptInput
     const handleDelete = (index: number) => {
-        if (index == buffer.length-1) {
-            const currentBuffer = buffer
-            currentBuffer.splice(index-3, 2)
-            const newBuffer: Array<BufferObject> = []
-            currentBuffer.forEach(obj => newBuffer.push(obj)) 
-            setBuffer(newBuffer)
-            return
+
+        switch (index != undefined) {
+            case (index == buffer.length-1): {
+                const currentBuffer = buffer
+                currentBuffer.splice(index-1, 2)
+                const newBuffer: Array<BufferObject> = []
+                currentBuffer.forEach(obj => newBuffer.push(obj)) 
+                console.log(newBuffer)
+                setBuffer(newBuffer)
+                setCurrentIndex(currentIndex-2)
+                return
+            }
+            case (index < buffer.length-1): {
+                const currentBuffer = buffer
+                var del = 2
+                if (index-2<0) {
+                    if (buffer.length >= 2 && buffer[0].type == buffer[1].type 
+                        && buffer[0].type == 'PromptInput') {
+                            del = 1
+                            currentBuffer.splice(0,1)
+                        }
+                } else {
+                    currentBuffer.splice(index-2,2)
+                }
+                const newBuffer: Array<BufferObject> = []
+                currentBuffer.forEach(obj => newBuffer.push(obj))
+                setBuffer(newBuffer)
+                setCurrentIndex(currentIndex-del)
+                return
+            }
         }
-        const currentBuffer = buffer
-        currentBuffer.splice(index-2,index-2<0?0:2)
-        const newBuffer: Array<BufferObject> = []
-        currentBuffer.forEach(obj => newBuffer.push(obj))
-        setBuffer(newBuffer)
+        
+    }
+
+    const handleOnInputFocus = (index: number) => {
+        console.log('///////////')
+        console.log('handleOnInputFocus')
+        console.log(index)
+        console.log('///////////')
+        setCurrentIndex(index)
+    }
+
+    const handleOnLastFocus = () => {
+        console.log('///////////')
+        console.log('handleOnLastFocus')
+        console.log(buffer)
+        console.log(buffer.length)
+        console.log('///////////')
+        setCurrentIndex(buffer.length)
     }
 
     return (
@@ -193,6 +235,7 @@ const PromptTxtArea = (props: Props) => {
                                 index={i} 
                                 makeTag={handleMakeTag}
                                 delete={handleDelete}
+                                handleFocus={handleOnInputFocus}
                                 />
                             )
                         }
@@ -234,6 +277,7 @@ const PromptTxtArea = (props: Props) => {
             disabled={false}
             onChange={handleInnerHTMLChange}
             onKeyDown={handleSubmit}
+            onFocus={handleOnLastFocus}
             />
             </div>
         </div>
@@ -242,6 +286,7 @@ const PromptTxtArea = (props: Props) => {
 
 export default PromptTxtArea;
 /*
+
 <input 
                 ref={lastInputRef} 
                 onKeyPress={handleSubmit} 
@@ -259,6 +304,7 @@ export default PromptTxtArea;
     * prompts in object form
     
     let store be a primitive read-write to json file
+    
 */
 
 

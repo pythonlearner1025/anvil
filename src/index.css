@@ -12,8 +12,3 @@ code {
     monospace;
 }
 
-.base {
-  display:flex;
-  width: 400px;
-  height: 500px;
-}
