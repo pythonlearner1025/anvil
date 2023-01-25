@@ -1,9 +1,5 @@
 import {useRef, useState, useEffect} from 'react';
-import PromptTag from "./PromptTag"
-import PromptInput from "./PromptInput"
-import PromptPadding from "./PromptPadding"
 import {PromptObject, BufferObject, PromptBuffer}  from "../types/PromptUITypes"
-import ContentEditable from "../utils/ContentEditable"
 import "./PromptUI.css"
 import "./colors.css"
 
@@ -12,48 +8,32 @@ interface Props {
     promptBuffer: PromptBuffer | null
 }
 
-
-const makeBufferObj = (type: 'RawPrompt' | 'PromptObject' | 'PromptInput' | 'PromptPadding', body?: string, assetPath?: string): BufferObject => {
-    if (type !== 'PromptInput' && type !== 'PromptPadding')
-    return {
-        type: type,
-        tag: {
-            type: type,
-            body: body!,
-            assetPath: assetPath
-            }
-    }
-    else if (type === 'PromptInput')
-    return {
-        type: 'PromptInput',
-        tag: null
-    }
-    else return {
-        type: 'PromptPadding',
-        tag: null
-    }
+interface Dims {
+    width: number
+    height: number
 }
 
 const PromptTxtArea = (props: Props) => {
+    const [dims, setDims] = useState<Dims>({width: 0, height: 0})
     const [buffer, setBuffer] = useState<Array<BufferObject>>([])
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const innerHTMLRef = useRef<HTMLDivElement|null>(null)
+    const textareaRef = useRef<HTMLTextAreaElement|null>(null)
     const bufferRef = useRef<HTMLDivElement|null>(null)
     const containerRef = useRef<HTMLDivElement|null>(null)
-
+    const toolbarRef = useRef<HTMLDivElement|null>(null)
 
     useEffect((()=> {
-        innerHTMLRef.current!.style.minWidth = '30px'
-        innerHTMLRef.current!.style.maxWidth = '100%'
-        innerHTMLRef.current!.style.height = '20px'
-        innerHTMLRef.current!.style.backgroundColor = '#383B53'
-        innerHTMLRef.current!.style.outline = '0px solid transparent'
-        innerHTMLRef.current!.style.borderRadius = '15px'
-        innerHTMLRef.current!.style.padding = '5px'
-        innerHTMLRef.current!.style.marginBottom = '5px'
-        innerHTMLRef.current!.style.marginLeft = '5px'
-        innerHTMLRef.current!.focus()
-    }), [])
+        setDims({width:bufferRef.current!.offsetWidth, height:containerRef.current!.offsetHeight-toolbarRef.current!.offsetHeight})
+        textareaRef.current!.style.width = `${bufferRef.current!.offsetWidth}px`
+        textareaRef.current!.style.height = `${containerRef.current!.offsetHeight-toolbarRef.current!.offsetHeight}px`
+        textareaRef.current!.style.borderColor = 'rgb(180,200,200,0.4)' 
+        textareaRef.current!.style.borderRadius = '5px'
+        textareaRef.current!.style.transitionDuration = '10'
+        textareaRef.current!.style.fontStyle = 'bold'
+        textareaRef.current!.style.fontFamily = 'Arial, sans-serif'
+        textareaRef.current!.style.fontStyle = 'normal'
+        textareaRef.current!.style.fontSize = 'medium'
+        textareaRef.current!.style.resize = 'none'
+    }),[])
 
     useEffect((()=> {
         console.log('updated buffer', buffer)
@@ -61,122 +41,37 @@ const PromptTxtArea = (props: Props) => {
     
     // insert selected PromptObject to cursor location
     useEffect((()=> {
-        if (props.promptObject == null) return
-        const name = props.promptObject.displayName?props.promptObject.displayName:props.promptObject.name
-        const bufferObj: BufferObject = makeBufferObj("PromptObject",name, props.promptObject.assetPath)
-        var del = 0
-        if (currentIndex < buffer.length && buffer[currentIndex].type == 'PromptInput') del = 1
-        const newBuffer = insertToBuffer(bufferObj, currentIndex, true, del)
-        setBuffer(newBuffer)
+        if (props.promptObject == undefined) return 
+        textareaRef.current!.focus()
+        const name = props.promptObject?.displayName != undefined ? props.promptObject?.displayName : props.promptObject?.name
+        document.execCommand('insertText', false /*no UI*/, ` ${name} `);
     }), [props.promptObject])
 
     useEffect((()=> {
-        if (props.promptBuffer == null) return
-        setBuffer(props.promptBuffer.buffer)
+       
     }), [props.promptBuffer])
 
-    const insertToBuffer = (obj: BufferObject, idx: number, padding=true, del=0):Array<BufferObject> => {
-        const currentBuffer = buffer;
-        if (padding) {
-            currentBuffer.splice(idx, del, makeBufferObj('PromptPadding'), obj)
-            setCurrentIndex(currentIndex + 2)
-        } else currentBuffer.splice(idx, del, obj) 
-        const newBuffer: Array<BufferObject> = []
-        currentBuffer.forEach(e => newBuffer.push(e))
-        return newBuffer
-    }
-    // make and insert rawprompt to buffer
-    const handleMakeTag = (index: number, body: string) => {
-        //console.log('////')
-        const bufferObj: BufferObject = makeBufferObj("RawPrompt", body)
-        //console.log('buffer before', buffer)
-        const newBuffer = insertToBuffer(bufferObj, index, true, 1)
-        //console.log('buffer after', newBuffer)
-        setBuffer(newBuffer)
-    }
-
-    const handleInsertInput = (index: number) => {
-        const bufferObj: BufferObject = makeBufferObj('PromptInput')
-        const newBuffer = insertToBuffer(bufferObj, index, false)
-        setBuffer(newBuffer)
-        setCurrentIndex(index)
-    }
-
-    const handleTextAreaClick = () => {
-       
-        //innerHTMLRef.current!.focus()
-    }
-
-    const handleSubmit = (e: any) => {
-        switch (e.key) {
-            case 'Enter': {
-                handleMakeTag(buffer.length, innerHTMLRef.current!.innerText)
-                innerHTMLRef.current!.innerText = '' 
-                innerHTMLRef.current!.style.marginLeft = '10px'
-                innerHTMLRef.current!.focus()
-                break;
-            }
-            case 'Backspace': {
-                if (innerHTMLRef.current!.innerText != '') break;
-                // delete 2: prompt tag + padding
-                handleDelete(buffer.length-1)
-                break;
-            }
-        }
-        return
-    }
-
-    const makeText = (divs: HTMLCollection):string => {
-        var res = ''
-        for (let i=0; i<divs.length; i++) {
-            const div:any = divs[i]
-            res += div.innerText + ' '
-        }
-        return res
-    }
-
     const handleCopy = () => {
-        // if this promptbuffer DNE, save.
-        navigator.clipboard.writeText(makeText(bufferRef.current!.children))
+        textareaRef.current!.select()
+        document.execCommand('copy')
     }
-
-    const handleInnerHTMLChange = () => {
-        var match = /\r|\n/.exec(innerHTMLRef.current!.innerText)
-        if (match) {
-            innerHTMLRef.current!.innerText = ''
-        }
-    }
-
     const handleClear = () => {
-        innerHTMLRef.current!.style.marginLeft = '0px'
-        const emptyBuffer: Array<BufferObject> = []
-        setBuffer(emptyBuffer)
+        textareaRef.current!.value = ''
     }
-
-    // delete both the raw prompt + padding AND insert PromptInput
-    const handleDelete = (index: number) => {
-        if (index == buffer.length-1) {
-            const currentBuffer = buffer
-            currentBuffer.splice(index-3, 2)
-            const newBuffer: Array<BufferObject> = []
-            currentBuffer.forEach(obj => newBuffer.push(obj)) 
-            setBuffer(newBuffer)
-            return
-        }
-        const currentBuffer = buffer
-        currentBuffer.splice(index-2,index-2<0?0:2)
-        const newBuffer: Array<BufferObject> = []
-        currentBuffer.forEach(obj => newBuffer.push(obj))
-        setBuffer(newBuffer)
+    const handleFocus = () => {
+        textareaRef.current!.style.boxShadow = 'none'
     }
-
+    const handleBlur = () => {
+        textareaRef.current!.style.width = `${dims.width}px`
+        textareaRef.current!.style.height = `${dims.height}px`
+        //#7246eb 
+    }
     return (
         <div 
         ref={containerRef}
         className="PromptTxtArea-Container tab-color"
-        onClick={handleTextAreaClick}
         >
-            <div className="PromptTxtArea-Toolbar background">
+            <div ref={toolbarRef}className="PromptTxtArea-Toolbar background">
                 <button className="button-save status-good-color" onClick={handleCopy}>copy</button>
                 <button className="button-save status-good-color" onClick={handleClear}>clear</button>
             </div> 
@@ -184,57 +79,14 @@ const PromptTxtArea = (props: Props) => {
             ref={bufferRef}
             className="PromptTxtArea-Buffer text-color-secondary"
             >
-                {buffer.map((obj, i) => {
-                    switch (obj.type) {
-                        case 'PromptInput': {
-                            return (
-                                <PromptInput 
-                                key={i} 
-                                index={i} 
-                                makeTag={handleMakeTag}
-                                delete={handleDelete}
-                                />
-                            )
-                        }
-                        case 'PromptPadding': {
-                            return (
-                                <PromptPadding
-                                key={i}
-                                index={i}
-                                insertInput={handleInsertInput}
-                                //rows={rows}
-                                />
-                            )
-                        }
-                        case 'RawPrompt': {
-                            return (
-                                <PromptTag 
-                                key={i}
-                                index={i}
-                                tag={obj.tag!}
-                                />
-                            )
-                        }
-                        case 'PromptObject': {
-                            return (
-                                <PromptTag 
-                                key={i}
-                                index={i}
-                                tag={obj.tag!}
-                                />
-                            )
-                        }
-                    }
-                
-                    })
-                }
-            <ContentEditable
-            innerRef={innerHTMLRef}
-            html={"<div></div>"}
-            disabled={false}
-            onChange={handleInnerHTMLChange}
-            onKeyDown={handleSubmit}
-            />
+              <textarea 
+              ref={textareaRef} 
+              className="PromptTxtArea-textarea text-color-secondary tab-color"
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              spellCheck={false}
+              ></textarea> 
+            
             </div>
         </div>
     )
@@ -242,6 +94,7 @@ const PromptTxtArea = (props: Props) => {
 
 export default PromptTxtArea;
 /*
+
 <input 
                 ref={lastInputRef} 
                 onKeyPress={handleSubmit} 
@@ -259,6 +112,7 @@ export default PromptTxtArea;
     * prompts in object form
     
     let store be a primitive read-write to json file
+    
 */
 
 

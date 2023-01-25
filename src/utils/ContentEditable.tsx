@@ -25,6 +25,7 @@ export default function ContentEditable({
   onBlur,
   onKeyPress,
   onKeyDown,
+  onFocus,
   ...props
 }: Props) {
   const onChangeRef = useRefCallback(onChange);
@@ -32,6 +33,7 @@ export default function ContentEditable({
   const onBlurRef = useRefCallback(onBlur);
   const onKeyPressRef = useRefCallback(onKeyPress);
   const onKeyDownRef = useRefCallback(onKeyDown);
+  const onFocusRef = useRefCallback(onFocus)
 
   return (
     <ReactContentEditable
@@ -41,6 +43,7 @@ export default function ContentEditable({
       onBlur={onBlurRef}
       onKeyPress={onKeyPressRef}
       onKeyDown={onKeyDownRef}
+      onFocus={onFocusRef}
     />
   );
 }

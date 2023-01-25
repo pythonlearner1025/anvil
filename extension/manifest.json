@@ -1,0 +1,39 @@
+{
+    "short_name": "Anvil",
+    "name": "Anvil",
+    "manifest_version": 3,
+    "version": "1.0.2",
+    "icons": {
+    },
+    "action": {
+        "default_title": "click to inject"
+    },
+    "commands": {
+        "_execute_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+P",
+                "mac": "Command+Shift+P"
+
+            }
+        }
+    },
+    "permissions": ["activeTab", "scripting"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "css": ["static/css/main.444450a2.css"]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources":["index.html"],
+            "matches": ["<all_urls>"],
+            "extension_ids": ["jeckhbdodaknimjagpbjdejamdaahmjf"]
+        }
+    ],
+    "host_permissions": ["<all_urls>"],
+    "description": "Anvil is a tool that lets you hammer out better prompts"
+  }

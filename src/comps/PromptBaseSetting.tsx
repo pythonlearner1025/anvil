@@ -16,10 +16,10 @@ const PromptBaseSetting = (props: Props) => {
         <div 
         className="PromptBaseSetting-Container background"
         style={{
-            width: props.parentWidth*0.85 ,
-            height: props.parentHeight*0.34,
-            left: (props.parentWidth - (props.parentWidth*0.85))/2,
-            top:(props.parentHeight - (props.parentHeight*0.34))/2
+            width: props.parentWidth*0.70 ,
+            height: props.parentHeight*0.23,
+            left: (props.parentWidth - (props.parentWidth*0.70))/2,
+            top:(props.parentHeight - (props.parentHeight*0.225))/2
         }}
         >
             <div className="PromptBaseSetting-wrapper">
