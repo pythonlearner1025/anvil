@@ -63,5 +63,6 @@
 }
 
 .top {
-    overflow: auto
+    overflow: auto;
+    padding:5px;
 }

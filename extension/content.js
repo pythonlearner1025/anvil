@@ -3,7 +3,7 @@ if (thisIframe == null) {
     var iframe = document.createElement('iframe'); 
     iframe.id = 'anvil-injected'
     iframe.style.colorScheme = 'normal'
-    iframe.style.width = '500px'
+    iframe.style.width = '600px'
     iframe.style.height = "100%";
     iframe.style.right = '0px'
     iframe.style.top = '0px'
@@ -13,8 +13,8 @@ if (thisIframe == null) {
     iframe.frameBorder = "none"; 
     iframe.src = chrome.runtime.getURL("index.html")
     document.body.appendChild(iframe) 
-} else if (thisIframe.style.width == '500px') {
+} else if (thisIframe.style.width == '600px') {
     thisIframe.style.width = '0px'
 } else if (thisIframe.style.width == '0px') {
-    thisIframe.style.width = '500px'
+    thisIframe.style.width = '600px'
 }

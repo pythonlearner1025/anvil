@@ -35,7 +35,7 @@
 }
 
 .btn-base-color{
-    background-color: rgb(46,48,68)
+    background-color: rgb(46,48,68);
 }
 
 .btn-hover-color{
@@ -43,6 +43,6 @@
 }
 
 .status-good-color{
-    background-color: #7246eb;
-    color: black;
+    background-color: #8058ee ;
+    color: rgb(0, 0, 0);
 }
