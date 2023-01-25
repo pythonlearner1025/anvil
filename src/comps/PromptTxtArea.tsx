@@ -52,6 +52,8 @@ const PromptTxtArea = (props: Props) => {
     }), [props.promptBuffer])
 
     const handleCopy = () => {
+        textareaRef.current!.select()
+        document.execCommand('copy')
     }
     const handleClear = () => {
         textareaRef.current!.value = ''
