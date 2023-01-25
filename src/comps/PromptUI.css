@@ -2,7 +2,7 @@
     position: fixed;
     right: 30px;
     width: 500px;
-    height: 800px;
+    height: 750px;
 }
 
 .PromptUI-wrapper{
@@ -110,3 +110,13 @@
     display: flex;
     justify-content: center;
 }
+
+.all-color {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  

@@ -1,20 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {PromptObject, PromptBuffer} from "../types/PromptUITypes"
 import PromptTxtArea from "./PromptTxtArea"
+import {Resizable, ResizableBox} from "react-resizable"
 import PromptSelectArea from "./PromptSelectArea"
 import "./PromptUI.css"
 import "./colors.css"
 
 // UI layout for anvil
 const PromptUI = () => {
-    useEffect((()=> {
-    }),[])
     const [selectedPromptObj, setSelectedPromptObj] = useState<PromptObject|null>(null)
     const [selectedBuff, setSelectedBuff] = useState<PromptBuffer|null>(null)
     const handleSetSelectedObj = (obj:PromptObject) => setSelectedPromptObj(obj)
     const handleSetSelectedBuff = (buff: PromptBuffer) => setSelectedBuff(buff)
+
+  
     return (
-        <div className="PromptUI-container">
+        <div 
+        className="PromptUI-container all-color"
+        >
             <div className="PromptUI-wrapper">
                 <PromptTxtArea 
                 promptObject={selectedPromptObj}
