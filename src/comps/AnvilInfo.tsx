@@ -36,6 +36,9 @@ const AnvilInfo = (props: Props) => {
                     Anvil will evolve, and your input is essential!
                 </p>
                 <div style={{textAlign: 'right'}}>
+                    <a className="Anvil-Info-link" href="https://discord.gg/pWzHJVpcUp"
+                    target="_blank">
+                        discord</a>
                     <a className="Anvil-Info-link" href="https://twitter.com/song_minjune"
                     target="_blank"
                      >twitter</a>
