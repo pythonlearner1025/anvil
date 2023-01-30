@@ -2,6 +2,8 @@ import {useRef, useState, useEffect} from 'react';
 import {PromptObject, BufferObject, PromptBuffer}  from "../types/PromptUITypes"
 import "./PromptUI.css"
 import "./colors.css"
+import {ReactComponent as Icon} from "../assets/info.svg"
+import AnvilInfo from "./AnvilInfo"
 
 interface Props {
     promptObject: PromptObject | null,
@@ -14,6 +16,7 @@ interface Dims {
 }
 
 const PromptTxtArea = (props: Props) => {
+    const [toggleInfo, setToggleInfo] = useState(false)
     const [dims, setDims] = useState<Dims>({width: 0, height: 0})
     const [buffer, setBuffer] = useState<Array<BufferObject>>([])
     const textareaRef = useRef<HTMLTextAreaElement|null>(null)
@@ -44,7 +47,7 @@ const PromptTxtArea = (props: Props) => {
         if (props.promptObject == undefined) return 
         textareaRef.current!.focus()
         const name = props.promptObject?.displayName != undefined ? props.promptObject?.displayName : props.promptObject?.name
-        document.execCommand('insertText', false /*no UI*/, ` ${name} `);
+        document.execCommand('insertText', false /*no UI*/, `${name} `);
     }), [props.promptObject])
 
     useEffect((()=> {
@@ -66,14 +69,29 @@ const PromptTxtArea = (props: Props) => {
         textareaRef.current!.style.height = `${dims.height}px`
         //#7246eb 
     }
+
+    const handleInfoClick = () => setToggleInfo(!toggleInfo) 
+
+
     return (
         <div 
         ref={containerRef}
         className="PromptTxtArea-Container tab-color"
         >
+            {(()=> {
+                if (toggleInfo) {
+                    return (
+                        <AnvilInfo
+                        parentWidth={containerRef.current!.offsetWidth} 
+                        parentHeight={containerRef.current!.offsetHeight} 
+                        />
+                    )
+                }
+            })()}
             <div ref={toolbarRef}className="PromptTxtArea-Toolbar background">
                 <button className="button-save status-good-color" onClick={handleCopy}>copy</button>
                 <button className="button-save status-good-color" onClick={handleClear}>clear</button>
+                <Icon className="PromptTxtArea-info" onClick={handleInfoClick}></Icon>
             </div> 
             <div 
             ref={bufferRef}
