@@ -10,7 +10,8 @@ const AnvilInfo = (props: Props) => {
         className="Anvil-Info background-light"
         style={{
             width: props.parentWidth*0.85,
-            height: props.parentHeight*0.65,
+            // 0.75 for firefox, 0.65 for chrome
+            height: props.parentHeight*0.85,
             left: (props.parentWidth - (props.parentWidth*0.85))/2,
             top:(props.parentHeight - (props.parentHeight*0.65))/2
         }}
