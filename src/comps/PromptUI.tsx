@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {PromptObject, PromptBuffer} from "../types/PromptUITypes"
 import PromptTxtArea from "./PromptTxtArea"
-import {Resizable, ResizableBox} from "react-resizable"
 import PromptSelectArea from "./PromptSelectArea"
 import "./PromptUI.css"
 import "./colors.css"
